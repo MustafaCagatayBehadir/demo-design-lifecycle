@@ -1,0 +1,7 @@
+services:
+  beat: !reset null
+
+  db:
+    volumes:
+      - "postgres_data:/var/lib/postgresql/data"
+      - "../nautobot.sql:/docker-entrypoint-initdb.d/nautobot.sql" # Sets sql file to be executed on first run

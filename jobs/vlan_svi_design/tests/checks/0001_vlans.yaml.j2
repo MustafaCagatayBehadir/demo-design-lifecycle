@@ -1,0 +1,6 @@
+checks:
+{% for vlan in vlans %}
+  - model_exists:
+      model: ipam.vlan
+      query: {vlan_group__name: "{{ vlan_group.name }}", vid: {{ vlan.id }}}
+{% endfor %}

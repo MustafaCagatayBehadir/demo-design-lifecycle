@@ -1,0 +1,26 @@
+# Design file 2 of 3: Create IP prefixes
+#
+# Creates one network-type prefix per VLAN and links it back to the VLAN
+# ref set in 0001_vlans.yaml.j2.  Prefixes are placed in the chosen
+# namespace so they participate in the correct VRF / routing domain.
+---
+prefixes:
+{% for vlan in vlans %}
+  - "!create_or_update:prefix": "{{ vlan.prefix }}"
+    namespace__name: "{{ ip_namespace.name }}"
+    status__name: "Active"
+    type: "network"
+    vlan: "!ref:vlan_{{ vlan.id }}"
+    description: "Prefix for {{ vlan.name }} (VLAN {{ vlan.id }})"
+    "!ref": "prefix_{{ vlan.id }}"
+{% endfor %}
+
+ip_addresses:
+{% for vlan in vlans %}
+  - "!create_or_update:host": "{{ vlan.gateway.split('/')[0] }}"
+    "!create_or_update:parent": "!ref:prefix_{{ vlan.id }}"
+    mask_length: {{ vlan.gateway.split('/')[1] }}
+    status__name: "Active"
+    description: "Gateway for {{ vlan.name }} (VLAN {{ vlan.id }})"
+    "!ref": "gateway_{{ vlan.id }}"
+{% endfor %}

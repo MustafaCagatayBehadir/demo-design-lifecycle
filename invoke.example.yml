@@ -1,0 +1,12 @@
+---
+demo_design_lifecycle:
+  project_name: "demo_design_lifecycle"
+  nautobot_ver: "3.1.0"
+  local: false
+  python_ver: "3.12"
+  compose_dir: "development"
+  compose_files:
+    - "docker-compose.base.yml"
+    - "docker-compose.redis.yml"
+    - "docker-compose.postgres.yml"
+    - "docker-compose.dev.yml"

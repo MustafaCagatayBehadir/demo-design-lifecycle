@@ -1,0 +1,16 @@
+# Design file 1 of 3: Create VLAN records
+#
+# Creates one VLAN per entry in context.yaml, assigns it to the chosen
+# VLAN group and location, and stores a per-VLAN ref for later files.
+---
+vlans:
+{% for vlan in vlans %}
+  - "!create_or_update:vid": {{ vlan.id }}
+    vlan_group__name: "{{ vlan_group.name }}"
+    name: "{{ vlan.name }}"
+    description: "{{ vlan.description | default('') }}"
+    status__name: "Active"
+    locations:
+      - "!create_or_update:name": "{{ location.name }}"
+    "!ref": "vlan_{{ vlan.id }}"
+{% endfor %}

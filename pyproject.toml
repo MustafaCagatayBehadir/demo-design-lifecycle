@@ -1,0 +1,77 @@
+[tool.poetry]
+name = "nautobot_service_lifecycle"
+version = "0.1.0"
+description = "Design-builder jobs for network service lifecycle management"
+authors = ["Network to Code, LLC <mustafa.behadir@networktocode.com>"]
+readme = "README.md"
+repository = "https://github.com/MustafaCagatayBehadir/nautobot-service-lifecycle"
+keywords = ["nautobot", "nautobot-plugin"]
+package-mode = false
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.15"
+nautobot = { version = "^3.1.0" }
+nautobot-design-builder = "*"
+
+[tool.poetry.group.dev.dependencies]
+coverage = "*"
+django-debug-toolbar = "*"
+invoke = "*"
+ipython = "*"
+pylint = "*"
+pylint-django = ">=2.5.4"
+pylint-nautobot = ">=0.3.1"
+ruff = "0.5.5"
+yamllint = "*"
+
+[tool.poetry.extras]
+all = []
+
+[tool.pylint.master]
+load-plugins = "pylint_django, pylint_nautobot"
+ignore = ".venv"
+
+[tool.pylint.basic]
+no-docstring-rgx = "^(_|test_|Meta$)"
+
+[tool.pylint.messages_control]
+disable = """,
+    line-too-long,
+    nb-warn-dunder-filter-field,
+    nb-no-search-function,
+    nb-no-char-filter-q,
+"""
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = [
+    "D",
+    "F", "E", "W",
+    "S",
+    "I",
+]
+ignore = [
+    "D203",
+    "D212",
+    "D213",
+    "D401",
+    "D407",
+    "D416",
+    "E501",
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.coverage.run]
+disable_warnings = ["already-imported"]
+relative_files = true
+omit = ["*/tests/*"]
+include = ["jobs/*"]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,22 @@
+# Design file 3 of 3: Create SVI interfaces and assign gateway IPs
+#
+# For each (device, VLAN) pair:
+#   - Creates a virtual interface named Vlan<id> on the existing device
+#   - Tags it with the VLAN ref from 0001_vlans.yaml.j2
+#   - Creates the gateway IP address and binds it to the interface via
+#     ip_addresses (the Interface.ip_addresses M2M field in Nautobot 3.x)
+---
+devices:
+{% for device in devices %}
+  - "!create_or_update:name": "{{ device.name }}"
+    interfaces:
+{% for vlan in vlans %}
+      - "!create_or_update:name": "Vlan{{ vlan.id }}"
+        type: "virtual"
+        status__name: "Active"
+        description: "SVI for {{ vlan.name }} (VLAN {{ vlan.id }})"
+        ip_addresses:
+          - "!ref:gateway_{{ vlan.id }}"
+        mtu: 1500
+{% endfor %}
+{% endfor %}

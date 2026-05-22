@@ -1,0 +1,29 @@
+# L2 Datacenter VLAN Service Definitions
+#
+# Each entry defines one VLAN and its associated L3 SVI configuration.
+# Required keys:
+#   id          - 802.1Q VLAN ID (1–4094)
+#   name        - VLAN name (used in Nautobot and on the device)
+#   prefix      - IP subnet for the SVI in CIDR notation
+#   gateway     - Gateway IP address assigned to the SVI (with prefix length)
+# Optional keys:
+#   description - Free-text description (defaults to empty string)
+
+vlans:
+  - id: 100
+    name: "PROD-APP"
+    prefix: "10.100.0.0/24"
+    gateway: "10.100.0.1/24"
+    description: "Production Application VLAN"
+
+  - id: 200
+    name: "PROD-DB"
+    prefix: "10.200.0.0/24"
+    gateway: "10.200.0.1/24"
+    description: "Production Database VLAN"
+
+  - id: 300
+    name: "OOBM"
+    prefix: "10.0.0.0/24"
+    gateway: "10.0.0.1/24"
+    description: "Out-of-band Management VLAN"
